@@ -16,6 +16,32 @@ base {
     archivesName = mod_id
 }
 
+def getGprUser() {
+    return project.findProperty('gpr.user') ?: System.getenv("GPR_USER")
+}
+
+def getGprKey() {
+    return project.findProperty('gpr.key') ?: System.getenv("GPR_KEY")
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHub"
+            url = uri("https://maven.pkg.github.com/tearpelato/DecoLIB")
+            credentials {
+                username = getGprUser()
+                password = getGprKey()
+            }
+        }
+    }
+}
+
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 neoForge {
@@ -145,7 +171,7 @@ sourceSets.main.resources.srcDir generateModMetadata
 neoForge.ideSyncTask generateModMetadata
 
 // Example configuration to allow publishing using the maven-publish plugin
-publishing {
+/*publishing {
     publications {
         register('mavenJava', MavenPublication) {
             from components.java
@@ -156,7 +182,7 @@ publishing {
             url "file://${project.projectDir}/repo"
         }
     }
-}
+}*/
 
 // IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
 idea {
