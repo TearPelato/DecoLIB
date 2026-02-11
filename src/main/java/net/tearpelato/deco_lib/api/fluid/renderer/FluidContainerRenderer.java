@@ -1,4 +1,4 @@
-package net.tier1234.deco_lib.api.fluid.renderer;
+package net.tearpelato.deco_lib.api.fluid.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -15,7 +15,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.tier1234.deco_lib.api.fluid.block_entity.FluidContainerBlockEntity;
+import net.tearpelato.deco_lib.api.fluid.block_entity.FluidContainerBlockEntity;
 import org.joml.Matrix4f;
 
 public class FluidContainerRenderer {

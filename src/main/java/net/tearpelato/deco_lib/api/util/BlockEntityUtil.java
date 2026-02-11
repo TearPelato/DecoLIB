@@ -1,4 +1,4 @@
-package net.tier1234.deco_lib.api.util;
+package net.tearpelato.deco_lib.api.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;

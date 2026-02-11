@@ -1,4 +1,4 @@
-package net.tier1234.deco_lib;
+package net.tearpelato.deco_lib;
 
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;

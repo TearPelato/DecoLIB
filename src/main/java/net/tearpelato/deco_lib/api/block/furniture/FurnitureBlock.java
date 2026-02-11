@@ -1,4 +1,4 @@
-package net.tier1234.deco_lib.api.block.furniture;
+package net.tearpelato.deco_lib.api.block.furniture;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;

@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.tier1234.deco_lib.mixin",
+  "package": "net.tearpelato.deco_lib.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
   ],

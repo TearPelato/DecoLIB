@@ -1,4 +1,4 @@
-package net.tier1234.deco_lib;
+package net.tearpelato.deco_lib;
 
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;

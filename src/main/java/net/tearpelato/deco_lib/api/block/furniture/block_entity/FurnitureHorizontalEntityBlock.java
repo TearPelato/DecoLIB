@@ -1,4 +1,4 @@
-package net.tier1234.deco_lib.api.block.furniture.block_entity;
+package net.tearpelato.deco_lib.api.block.furniture.block_entity;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;

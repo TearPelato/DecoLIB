@@ -1,4 +1,4 @@
-package net.tier1234.deco_lib.api.shape;
+package net.tearpelato.deco_lib.api.shape;
 
 import com.google.common.base.Preconditions;
 import net.minecraft.core.Direction;

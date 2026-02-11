@@ -1,4 +1,4 @@
-package net.tier1234.deco_lib.api.fluid.util;
+package net.tearpelato.deco_lib.api.fluid.util;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;

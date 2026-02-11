@@ -1,4 +1,4 @@
-package net.tier1234.deco_lib.api.block.furniture;
+package net.tearpelato.deco_lib.api.block.furniture;
 
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;

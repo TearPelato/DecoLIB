@@ -1,4 +1,4 @@
-package net.tier1234.deco_lib.api.block_entity;
+package net.tearpelato.deco_lib.api.block_entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
