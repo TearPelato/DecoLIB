@@ -11,4 +11,7 @@ This LIB is actually compatible with 1.21.1 NeoForge, it will remains on neoforg
 This mod doesn't need to be installed, after the implementation(if you don't know how to add it the maven provide it [Maven](https://maven.liukrast.net/net/tearpelato/deco_lib-1.21.1/)
 and after the implementation just add the jarJar method which automatically install the llib with the mod without any other steps
 
-# Immplementation Exxample
+# Immplementation Example
+Inside the `build.gradle` file inside the repositories add the maven:
+
+``
