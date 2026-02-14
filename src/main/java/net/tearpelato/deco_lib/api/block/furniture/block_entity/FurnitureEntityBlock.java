@@ -2,6 +2,7 @@ package net.tearpelato.deco_lib.api.block.furniture.block_entity;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -44,10 +45,10 @@ public abstract class FurnitureEntityBlock extends BaseEntityBlock
     }
 
     @Override
-    public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos)
-    {
+    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
         return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(level.getBlockEntity(pos));
     }
+
 
     @Override
     public boolean hasAnalogOutputSignal(BlockState state)

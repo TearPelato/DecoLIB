@@ -5,7 +5,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
@@ -37,7 +37,7 @@ public class BlockEntityUtil {
     }
 
     private static void writeIdAndPos(BlockEntity blockEntity, CompoundTag tag) {
-        ResourceLocation id = Registries.BLOCK_ENTITY_TYPE.location();
+        Identifier id = Registries.BLOCK_ENTITY_TYPE.identifier();
         if (id != null) {
             tag.putString("id", id.toString());
             BlockPos pos = blockEntity.getBlockPos();
