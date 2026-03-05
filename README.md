@@ -14,12 +14,12 @@ and after the implementation just add the jarJar method which automatically inst
 # Immplementation Example
 Inside the `build.gradle` file inside the repositories add the maven:
 
-`maven {
+```maven {
         url = "https://maven.liukrast.net/"
-    }`
+    }```
 and in the dependencies add this
-`implementation("net.tearpelato:deco_lib-1.21.1:${deco_lib_version}")
-    jarJar("net.tearpelato:deco_lib-1.21.1:${deco_lib_version}")`
+```implementation("net.tearpelato:deco_lib-1.21.1:${deco_lib_version}")
+    jarJar("net.tearpelato:deco_lib-1.21.1:${deco_lib_version}")```
 
 so the deco_lib_vrsion parameter iis about to be defined on the `gradle.properties` file
 like this:
