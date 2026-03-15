@@ -32,7 +32,7 @@ public class BlockEntityUtil {
     public static void sendUpdatePacket(BlockEntity blockEntity, CompoundTag tag) {
         writeIdAndPos(blockEntity, tag);
         ClientboundBlockEntityDataPacket packet =
-                ClientboundBlockEntityDataPacket.create(blockEntity, (entity, registryAccess) -> tag);
+                ClientboundBlockEntityDataPacket.create(blockEntity, (entity) -> tag);
         sendToChunkWatchers(blockEntity.getLevel(), blockEntity.getBlockPos(), packet);
     }
 

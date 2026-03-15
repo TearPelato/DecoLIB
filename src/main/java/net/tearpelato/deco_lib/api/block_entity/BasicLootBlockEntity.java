@@ -105,23 +105,21 @@ public abstract class BasicLootBlockEntity extends RandomizableContainerBlockEnt
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
-    {
-        super.saveAdditional(tag, provider);
-        if(!this.trySaveLootTable(tag))
+    protected void saveAdditional(CompoundTag pTag) {
+        super.saveAdditional(pTag);
+        if(!this.trySaveLootTable(pTag))
         {
-            ContainerHelper.saveAllItems(tag, this.items, provider);
+            ContainerHelper.saveAllItems(pTag, this.items);
         }
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
-    {
-        super.loadAdditional(tag, provider);
+    public void load(CompoundTag pTag) {
+        super.load(pTag);
         this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        if(!this.tryLoadLootTable(tag))
+        if(!this.tryLoadLootTable(pTag))
         {
-            ContainerHelper.loadAllItems(tag, this.items, provider);
+            ContainerHelper.loadAllItems(pTag, this.items);
         }
     }
 

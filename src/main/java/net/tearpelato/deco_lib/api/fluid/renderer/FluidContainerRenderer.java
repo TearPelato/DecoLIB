@@ -13,8 +13,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.fluids.FluidStack;
 import net.tearpelato.deco_lib.api.fluid.block_entity.FluidContainerBlockEntity;
 import org.joml.Matrix4f;
 
@@ -57,10 +57,10 @@ public class FluidContainerRenderer {
         float v1 = still.getV0() + (still.getV1() - still.getV0()) * (float) (box.maxZ - Math.floor(box.minZ));
 
         Matrix4f mat = ms.last().pose();
-        vc.addVertex(mat, (float) box.minX, y, (float) box.minZ).setColor(r,g,b,a).setUv(u0,v0).setLight(light).setNormal(0,1,0);
-        vc.addVertex(mat, (float) box.minX, y, (float) box.maxZ).setColor(r,g,b,a).setUv(u0,v1).setLight(light).setNormal(0,1,0);
-        vc.addVertex(mat, (float) box.maxX, y, (float) box.maxZ).setColor(r,g,b,a).setUv(u1,v1).setLight(light).setNormal(0,1,0);
-        vc.addVertex(mat, (float) box.maxX, y, (float) box.minZ).setColor(r,g,b,a).setUv(u1,v0).setLight(light).setNormal(0,1,0);
+        vc.vertex(mat, (float) box.minX, y, (float) box.minZ).color(r,g,b,a).uv(u0,v0).uv2(light).normal(0,1,0);
+        vc.vertex(mat, (float) box.minX, y, (float) box.maxZ).color(r,g,b,a).uv(u0,v1).uv2(light).normal(0,1,0);
+        vc.vertex(mat, (float) box.maxX, y, (float) box.maxZ).color(r,g,b,a).uv(u1,v1).uv2(light).normal(0,1,0);
+        vc.vertex(mat, (float) box.maxX, y, (float) box.minZ).color(r,g,b,a).uv(u1,v0).uv2(light).normal(0,1,0);
     }
 
     public static AABB createRotatedBox(Direction dir, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {

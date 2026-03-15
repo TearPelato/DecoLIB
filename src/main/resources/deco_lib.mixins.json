@@ -2,15 +2,13 @@
   "required": true,
   "minVersion": "0.8",
   "package": "net.tearpelato.deco_lib.mixin",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "deco_lib.refmap.json",
   "mixins": [
   ],
   "client": [
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "overwrites": {
-    "requireAnnotations": true
   }
 }

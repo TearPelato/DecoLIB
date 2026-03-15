@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -49,54 +49,57 @@ public abstract class FluidContainerBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag,registries);
-        if(stack.isEmpty()) return;
-        tag.put("FluidStack", FluidStack.CODEC.encode(stack, NbtOps.INSTANCE, new CompoundTag()).getOrThrow());
+    protected void saveAdditional(CompoundTag pTag) {
+        super.saveAdditional(pTag);
+        if (!stack.isEmpty()) {
+            FluidStack.CODEC
+                    .encodeStart(NbtOps.INSTANCE, stack)
+                    .resultOrPartial(err -> {})
+                    .ifPresent(nbt -> pTag.put("FluidStack", nbt));
+        }
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-
-        /* CODICE DA TOGLIERE QUANDO TUTTI AVRANNO CONVERTITO (PROBABILMENTE MAI) */
-        if (tag.contains("FluidName")) { // LEGACY ENCODING
-            String name = tag.getString("FluidName");
-            if ("minecraft:empty".equals(name)) {
-                this.stack = new FluidStack(Fluids.EMPTY, 0);
+    public void load(CompoundTag pTag) {
+        super.load(pTag);
+        if (pTag.contains("FluidName")) {
+            ResourceLocation id = ResourceLocation.tryParse(pTag.getString("FluidName"));
+            if (id == null) {
+                stack = FluidStack.EMPTY;
                 return;
             }
-            Optional<Holder.Reference<Fluid>> fluid =
-                    BuiltInRegistries.FLUID.getHolder(ResourceLocation.parse(name));
 
-            if (fluid.isEmpty()) {
-                this.stack = new FluidStack(Fluids.EMPTY, 0);
+            Fluid fluid = BuiltInRegistries.FLUID.get(id);
+            if (fluid == Fluids.EMPTY) {
+                stack = FluidStack.EMPTY;
                 return;
             }
-            int amount = Math.min(tag.getInt("Amount"), capacity);
-            if (amount <= 0) {
-                this.stack = new FluidStack(Fluids.EMPTY, 0);
-                return;
-            }
-            var ref = fluid.get();
-            this.stack = new FluidStack(ref, amount);
 
-        } else if (tag.contains("FluidStack")) {
-            this.stack = FluidStack.CODEC.decode(NbtOps.INSTANCE, tag.get("FluidStack"))
-                    .getOrThrow()
-                    .getFirst();
-
-        } else {
-            this.stack = new FluidStack(Fluids.EMPTY, 0);
+            int amount = Math.min(pTag.getInt("Amount"), capacity);
+            stack = amount > 0 ? new FluidStack(fluid, amount) : FluidStack.EMPTY;
+            return;
         }
+
+        if (pTag.contains("FluidStack")) {
+            FluidStack.CODEC
+                    .parse(NbtOps.INSTANCE, pTag.get("FluidStack"))
+                    .resultOrPartial(err -> {})
+                    .ifPresent(fs -> stack = fs);
+            return;
+        }
+
+        stack = FluidStack.EMPTY;
     }
+
+
 
     @Nullable
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() { return ClientboundBlockEntityDataPacket.create(this); }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        return saveWithoutMetadata(registries);
+    public CompoundTag getUpdateTag() {
+        return saveWithoutMetadata();
     }
+
 }

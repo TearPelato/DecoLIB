@@ -56,8 +56,7 @@ public abstract class FurnitureEntityBlock extends BaseEntityBlock
     }
 
     @Override
-    protected boolean isPathfindable(BlockState state, PathComputationType type)
-    {
+    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
         return false;
     }
 
