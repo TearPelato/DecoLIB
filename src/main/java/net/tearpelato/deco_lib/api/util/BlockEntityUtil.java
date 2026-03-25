@@ -50,7 +50,7 @@ public class BlockEntityUtil {
     private static void sendToChunkWatchers(Level level, BlockPos pos, Packet<?> packet) {
         if (!(level instanceof ServerLevel serverLevel)) return;
         List<ServerPlayer> players = serverLevel.getChunkSource()
-                .chunkMap.getPlayers(new ChunkPos(pos), false);
+                .chunkMap.getPlayers(ChunkPos.containing(pos), false);
         for (ServerPlayer player : players) {
             player.connection.send(packet);
         }

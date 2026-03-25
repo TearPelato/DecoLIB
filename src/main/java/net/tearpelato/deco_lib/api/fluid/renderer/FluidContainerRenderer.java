@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -27,8 +28,8 @@ public class FluidContainerRenderer {
         if (sprites == null || sprites.length == 0 || sprites[0] == null) return;
 
         TextureAtlasSprite still = sprites[0];
-        int color = FluidContainerRendererUtil.getFluidColor(stack, world, pos);
-        if (fluid.isSame(Fluids.WATER)) color = BiomeColors.getAverageWaterColor(world, pos);
+        int color = FluidContainerRendererUtil.getFluidColor(stack, (BlockAndTintGetter) world, pos);
+        if (fluid.isSame(Fluids.WATER)) color = BiomeColors.getAverageWaterColor((BlockAndTintGetter) world, pos);
 
         float r = FastColor.ARGB32.red(color) / 255f;
         float g = FastColor.ARGB32.green(color) / 255f;
