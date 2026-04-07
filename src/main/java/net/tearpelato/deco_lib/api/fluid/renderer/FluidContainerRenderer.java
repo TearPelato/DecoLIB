@@ -5,46 +5,43 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
-import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.Level;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.fluids.FluidStack;
 import net.tearpelato.deco_lib.api.fluid.block_entity.FluidContainerBlockEntity;
+import net.tearpelato.deco_lib.api.fluid.renderer.render_state.FluidRenderState;
 import org.joml.Matrix4f;
 
 public class FluidContainerRenderer {
 
-    public static void drawContainer(Level world, BlockPos pos, FluidContainerBlockEntity be, AABB box, PoseStack ms, MultiBufferSource buf, int light) {
+    public static void drawContainer(FluidRenderState state, BlockAndTintGetter world, BlockPos pos, FluidContainerBlockEntity be, AABB box, PoseStack ms, MultiBufferSource buf) {
         Fluid fluid = be.getFluid();
         if (fluid == Fluids.EMPTY) return;
-        FluidStack stack = new FluidStack(fluid, be.getStoredAmount());
+       /* FluidStack stack = new FluidStack(fluid, be.getStoredAmount());
         TextureAtlasSprite[] sprites = FluidContainerRendererUtil.getFluidSprites(fluid);
-        if (sprites == null || sprites.length == 0 || sprites[0] == null) return;
+        if (sprites == null || sprites.length == 0 || sprites[0] == null) return;*/
 
-        TextureAtlasSprite still = sprites[0];
-        int color = FluidContainerRendererUtil.getFluidColor(stack, (BlockAndTintGetter) world, pos);
-        if (fluid.isSame(Fluids.WATER)) color = BiomeColors.getAverageWaterColor((BlockAndTintGetter) world, pos);
-
-        float r = FastColor.ARGB32.red(color) / 255f;
-        float g = FastColor.ARGB32.green(color) / 255f;
-        float b = FastColor.ARGB32.blue(color) / 255f;
+        TextureAtlasSprite still = state.fluidSprites.still();
+        int color = state.waterTintAtPos;
+        if (fluid.isSame(Fluids.WATER)) color = BiomeColors.getAverageWaterColor(world, pos);
+        float r = ARGB.red(color) / 255f;
+        float g = ARGB.green(color) / 255f;
+        float b = ARGB.blue(color) / 255f;
         float a = 1.0f;
-
         float fullness = (float) be.getStoredAmount() / be.getCapacity();
         float y = (float) box.minY + (float)(box.maxY - box.minY) * fullness;
         y = Math.min((float) box.maxY, Math.max((float) box.minY, y));
-
         float u0 = still.getU0() + (still.getU1() - still.getU0()) * (float) (box.minX - Math.floor(box.minX));
         float u1 = still.getU0() + (still.getU1() - still.getU0()) * (float) (box.maxX - Math.floor(box.minX));
         float v0 = still.getV0() + (still.getV1() - still.getV0()) * (float) (box.minZ - Math.floor(box.minZ));
         float v1 = still.getV0() + (still.getV1() - still.getV0()) * (float) (box.maxZ - Math.floor(box.minZ));
 
+        int light = state.lightCoords;
         VertexConsumer vc = buf.getBuffer(RenderTypes.translucentMovingBlock());
         Matrix4f mat = ms.last().pose();
         vc.addVertex(mat, (float) box.minX, y, (float) box.minZ).setColor(r,g,b,a).setUv(u0,v0).setLight(light).setNormal(0,1,0);
