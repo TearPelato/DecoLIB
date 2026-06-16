@@ -2,10 +2,10 @@ package net.tearpelato.deco_lib.api.fluid.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BiomeColors;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,15 +17,17 @@ import net.tearpelato.deco_lib.api.fluid.block_entity.FluidContainerBlockEntity;
 import net.tearpelato.deco_lib.api.fluid.renderer.render_state.FluidRenderState;
 import org.joml.Matrix4f;
 
+//TODO fix
 public class FluidContainerRenderer {
 
-    public static void drawContainer(FluidRenderState state, BlockAndTintGetter world, BlockPos pos, FluidContainerBlockEntity be, AABB box, PoseStack ms, MultiBufferSource buf) {
+    public static void drawContainer(FluidRenderState state, BlockAndTintGetter world, BlockPos pos, FluidContainerBlockEntity be, AABB box, PoseStack ms, VertexConsumer vcBuffer, SubmitNodeCollector.CustomGeometryRenderer geometryRenderer, PoseStack.Pose pose) {
         Fluid fluid = be.getFluid();
         if (fluid == Fluids.EMPTY) return;
        /* FluidStack stack = new FluidStack(fluid, be.getStoredAmount());
         TextureAtlasSprite[] sprites = FluidContainerRendererUtil.getFluidSprites(fluid);
         if (sprites == null || sprites.length == 0 || sprites[0] == null) return;*/
 
+        Minecraft mc = Minecraft.getInstance();
         TextureAtlasSprite still = state.fluidSprites.still();
         int color = state.waterTintAtPos;
         if (fluid.isSame(Fluids.WATER)) color = BiomeColors.getAverageWaterColor(world, pos);
@@ -42,12 +44,12 @@ public class FluidContainerRenderer {
         float v1 = still.getV0() + (still.getV1() - still.getV0()) * (float) (box.maxZ - Math.floor(box.minZ));
 
         int light = state.lightCoords;
-        VertexConsumer vc = buf.getBuffer(RenderTypes.translucentMovingBlock());
+        geometryRenderer.render(pose, vcBuffer);
         Matrix4f mat = ms.last().pose();
-        vc.addVertex(mat, (float) box.minX, y, (float) box.minZ).setColor(r,g,b,a).setUv(u0,v0).setLight(light).setNormal(0,1,0);
-        vc.addVertex(mat, (float) box.minX, y, (float) box.maxZ).setColor(r,g,b,a).setUv(u0,v1).setLight(light).setNormal(0,1,0);
-        vc.addVertex(mat, (float) box.maxX, y, (float) box.maxZ).setColor(r,g,b,a).setUv(u1,v1).setLight(light).setNormal(0,1,0);
-        vc.addVertex(mat, (float) box.maxX, y, (float) box.minZ).setColor(r,g,b,a).setUv(u1,v0).setLight(light).setNormal(0,1,0);
+        vcBuffer.addVertex(mat, (float) box.minX, y, (float) box.minZ).setColor(r,g,b,a).setUv(u0,v0).setLight(light).setNormal(0,1,0);
+        vcBuffer.addVertex(mat, (float) box.minX, y, (float) box.maxZ).setColor(r,g,b,a).setUv(u0,v1).setLight(light).setNormal(0,1,0);
+        vcBuffer.addVertex(mat, (float) box.maxX, y, (float) box.maxZ).setColor(r,g,b,a).setUv(u1,v1).setLight(light).setNormal(0,1,0);
+        vcBuffer.addVertex(mat, (float) box.maxX, y, (float) box.minZ).setColor(r,g,b,a).setUv(u1,v0).setLight(light).setNormal(0,1,0);
     }
 
     public static AABB createRotatedBox(Direction dir, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
