@@ -1,11 +1,14 @@
 package net.tearpelato.deco_lib.api.fluid.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.PrimitiveTopology;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,10 +20,9 @@ import net.tearpelato.deco_lib.api.fluid.block_entity.FluidContainerBlockEntity;
 import net.tearpelato.deco_lib.api.fluid.renderer.render_state.FluidRenderState;
 import org.joml.Matrix4f;
 
-//TODO fix
 public class FluidContainerRenderer {
 
-    public static void drawContainer(FluidRenderState state, BlockAndTintGetter world, BlockPos pos, FluidContainerBlockEntity be, AABB box, PoseStack ms, VertexConsumer vcBuffer, SubmitNodeCollector.CustomGeometryRenderer geometryRenderer, PoseStack.Pose pose) {
+    public static void drawContainer(FluidRenderState state, BlockAndTintGetter world, BlockPos pos, FluidContainerBlockEntity be, AABB box, PoseStack ms, OrderedSubmitNodeCollector collector) {
         Fluid fluid = be.getFluid();
         if (fluid == Fluids.EMPTY) return;
        /* FluidStack stack = new FluidStack(fluid, be.getStoredAmount());
@@ -44,13 +46,13 @@ public class FluidContainerRenderer {
         float v1 = still.getV0() + (still.getV1() - still.getV0()) * (float) (box.maxZ - Math.floor(box.minZ));
 
         int light = state.lightCoords;
-        geometryRenderer.render(pose, vcBuffer);
-        VertexConsumer vc = Minecraft.getInstance().gameRenderer.renderBuffers().stagedVertexBuffer().getVertexBuilder(state.draw);
+        ByteBufferBuilder bufferBuilder = new ByteBufferBuilder(4 * 32);
+        BufferBuilder builder = new BufferBuilder(bufferBuilder, PrimitiveTopology.QUADS , DefaultVertexFormat.BLOCK);
         Matrix4f mat = ms.last().pose();
-        vc.addVertex(mat, (float) box.minX, y, (float) box.minZ).setColor(r,g,b,a).setUv(u0,v0).setLight(light).setNormal(0,1,0);
-        vc.addVertex(mat, (float) box.minX, y, (float) box.maxZ).setColor(r,g,b,a).setUv(u0,v1).setLight(light).setNormal(0,1,0);
-        vc.addVertex(mat, (float) box.maxX, y, (float) box.maxZ).setColor(r,g,b,a).setUv(u1,v1).setLight(light).setNormal(0,1,0);
-        vc.addVertex(mat, (float) box.maxX, y, (float) box.minZ).setColor(r,g,b,a).setUv(u1,v0).setLight(light).setNormal(0,1,0);
+        builder.addVertex(mat, (float) box.minX, y, (float) box.minZ).setColor(r,g,b,a).setUv(u0,v0).setLight(light).setNormal(0,1,0);
+        builder.addVertex(mat, (float) box.minX, y, (float) box.maxZ).setColor(r,g,b,a).setUv(u0,v1).setLight(light).setNormal(0,1,0);
+        builder.addVertex(mat, (float) box.maxX, y, (float) box.maxZ).setColor(r,g,b,a).setUv(u1,v1).setLight(light).setNormal(0,1,0);
+        builder.addVertex(mat, (float) box.maxX, y, (float) box.minZ).setColor(r,g,b,a).setUv(u1,v0).setLight(light).setNormal(0,1,0);
     }
 
     public static AABB createRotatedBox(Direction dir, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {

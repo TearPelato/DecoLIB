@@ -1,6 +1,5 @@
 package net.tearpelato.deco_lib.api.fluid.renderer.render_state;
 
-import net.minecraft.client.renderer.StagedVertexBuffer;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.core.BlockPos;
@@ -17,5 +16,4 @@ public class FluidRenderState extends BlockEntityRenderState {
     public BlockPos pos;
     public FluidSprites fluidSprites;
     public int waterTintAtPos = 0xFFFFFF;
-    public StagedVertexBuffer.Draw draw;
 }
