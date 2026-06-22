@@ -25,7 +25,7 @@ public class FluidRenderState extends BlockEntityRenderState {
 
 
     public boolean valid() {
-        return this.facing != null && this.fluid != null;
+        return this.facing != null && this.fluid != null && this.fluidSprites != null;
     }
 
     public static void extract(FluidRenderState state, @Nullable Level level, BlockPos pos)
